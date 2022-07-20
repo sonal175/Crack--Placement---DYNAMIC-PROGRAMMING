@@ -4,7 +4,9 @@
  
   // DP Code 
   
-  // TC-O(n) Sc-O(n)
+  // TC-O(n) Sc-O(n)  where n is the number of stairs
+  
+  // Code--
   
     int climbStairs(int n) {
         int dp[n+1];
@@ -13,4 +15,19 @@
             dp[i]=dp[i-1]+dp[i-2];
         }
         return dp[n];
+    }
+  
+  
+  // TC-O(n) SC-O(1) where n is the number of stairs
+  
+  // Code--
+  
+     int climbStairs(int n) {
+        int a1=1, a2=1;
+        for(int i=2;i<=n;i++){
+            int x=a1+a2;
+            a2=a1;
+            a1=x;
+        }
+        return a1;
     }
