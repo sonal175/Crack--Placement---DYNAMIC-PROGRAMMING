@@ -1,0 +1,38 @@
+// Frog Jump-- Coding Ninja 
+
+ // 1d dp problem
+ 
+  // TC-O(n) SC-O(n) where n is the size of heights vector
+  
+   // Code--
+     
+      int frogJump(int n, vector<int> &heights)
+{
+    int dp[n];
+    dp[0]=0;
+    for(int i=1;i<n;i++){
+        if(i>1){
+        dp[i]=min(dp[i-1]+abs(heights[i-1]-heights[i]),dp[i-2]+abs(heights[i-2]-heights[i]));
+    }else{
+            dp[i]=dp[i-1]+abs(heights[i-1]-heights[i]);
+        }
+    }
+        return dp[n-1];
+    
+}
+
+  // TC-O(n)  SC-O(1) where n is the size of heights vector
+  
+    // Code--
+      
+      int frogJump(int n, vector<int> &heights)
+{
+    int a2=0;
+    int a1=0+abs(heights[1]-heights[0]);
+    for(int i=2;i<n;i++){
+        int x=min(a1+abs(heights[i]-heights[i-1]),a2+abs(heights[i]-heights[i-2]));
+        a2=a1;
+        a1=x;
+    }
+    return a1;
+}
