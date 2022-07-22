@@ -1,0 +1,26 @@
+// Frog jump with K steps
+
+ // 1d dp problem
+ 
+  // TC=O(n*k) SC-O(n) where n is the size of heights vector and k is the total steps alowed 
+  
+   // Code--
+   
+    
+     int frogJump(int n, vector<int> &heights,int k)
+{
+    int dp[n];
+    dp[0]=0;
+    for(int i=1;i<n;i++){
+        int minsteps=INT_MAX;
+        for(int j=1;j<=k;j++){
+            if(i-j>=0){
+                int jump=dp[i-j] +abs(heights[i]-heights[i-j]);
+                minsteps=min(minsteps,jump);
+            }
+            
+        }
+        dp[i]=minsteps;
+    }
+    return dp[n-1];
+}
