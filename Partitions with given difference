@@ -1,0 +1,63 @@
+// Partitions with given difference
+
+// Dp code--
+
+ // TC-O(n*sum) SC-O(n*sum) where n and sum are size of array and sum of all elements of array
+  
+  // Code--
+  
+   int countPartitions(int n, int d, vector<int> &arr) {
+    int sum=0;
+    for(int i=0;i<n;i++) sum+=arr[i];
+    if((sum-d)<0 || (sum-d)%2!=0 ) return 0;
+    int k=(sum-d)/2;
+        int mod=1e9+7;
+        vector<vector<int>>dp(n,vector<int>(k+1,0));
+       if(arr[0]==0) dp[0][0]=2;
+       else dp[0][0]=1;
+    if(arr[0]<=k && arr[0]!=0) dp[0][arr[0]]=1;
+    for(int i=1;i<n;i++){
+        for(int t=0;t<=k;t++){
+            int ntake=dp[i-1][t];
+            int take=0;
+            if(arr[i]<=t){
+                take=dp[i-1][t-arr[i]];
+            }
+            dp[i][t]=(take + ntake)%mod;;
+        }
+    }
+    return dp[n-1][k];
+    
+}
+
+// Space optimised code
+
+//  TC-O(n*sum) SC-O(sum) where n and sum are size of array and sum of all elements of array
+
+// Code---
+
+ int countPartitions(int n, int d, vector<int> &arr) {
+    int sum=0;
+    for(int i=0;i<n;i++) sum+=arr[i];
+    if((sum-d)<0 || (sum-d)%2!=0 ) return 0;
+    int k=(sum-d)/2;
+        int mod=(int)(1e9+7);
+        vector<int>prev(k+1,0),curr(k+1,0);
+       if(arr[0]==0) prev[0]=2;
+       else prev[0]=1;
+    if(arr[0]<=k && arr[0]!=0) prev[arr[0]]=1;
+    for(int i=1;i<n;i++){
+        for(int t=0;t<=k;t++){
+            int ntake=prev[t];
+            int take=0;
+            if(arr[i]<=t){
+                take=prev[t-arr[i]];
+            }
+            curr[t]=(take + ntake)%mod;;
+        }
+        prev=curr;
+    }
+    return prev[k];
+}
+
+
