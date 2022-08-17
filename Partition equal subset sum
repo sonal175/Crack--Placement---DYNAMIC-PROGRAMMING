@@ -1,0 +1,63 @@
+// Partition equal subset sum
+
+ // Dp code--
+ 
+  // TC-O(n*sum)  SC-O(n*sum)  where n and sum are size of the array and sum of all elements of array
+  
+  // Code--
+    
+     bool canPartition(vector<int>& nums) {
+        int sum=0;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+        }
+        if(sum%2!=0) return false;
+        int k=sum/2;
+        vector<vector<int>>dp(n,vector<int>(k+1,0));
+    for(int i=0;i<n;i++) dp[i][0]=1;
+    if(nums[0]<=k) dp[0][nums[0]]=1;
+    for(int i=1;i<n;i++){
+        for(int t=1;t<=k;t++){
+            int ntake=dp[i-1][t];
+            int take=0;
+            if(nums[i]<=t){
+                take=dp[i-1][t-nums[i]];
+            }
+            dp[i][t]=take || ntake;
+        }
+    }
+    return dp[n-1][k];
+    }
+    
+  // Space optimised code
+  
+   // TC-O(n*sum) SC-O(sum) where n and sum are size of the array and sum of all elements of array
+   
+    // Code--
+     
+     bool canPartition(vector<int>& nums) {
+        int sum=0;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+        }
+        if(sum%2!=0) return false;
+        int k=sum/2;
+        vector<int>prev(k+1,0),curr(k+1,0);
+        prev[0]=1;
+        curr[0]=1;
+    if(nums[0]<=k) prev[nums[0]]=1;
+    for(int i=1;i<n;i++){
+        for(int t=1;t<=k;t++){
+            int ntake=prev[t];
+            int take=0;
+            if(nums[i]<=t){
+                take=prev[t-nums[i]];
+            }
+            curr[t]=take || ntake;
+        }
+        prev=curr;
+    }
+    return prev[k];
+    }
