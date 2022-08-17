@@ -1,0 +1,52 @@
+// Subset sum problem
+
+// Dp code--
+
+ // TC-O(m*sum) SC-O(m*sum) where m and sum are size of given array and target value
+ 
+  // Code--
+    
+     bool isSubsetSum(vector<int>arr, int sum){
+        int m=arr.size();
+        vector<vector<int>>dp(m,vector<int>(sum+1,0));
+        for(int i=0;i<m;i++) dp[i][0]=1;
+        if(arr[0]<=sum) dp[0][arr[0]]=1;
+        for(int i=1;i<m;i++){
+            for(int j=1;j<=sum;j++){
+                int ntake=dp[i-1][j];
+                int take=0;
+                if(arr[i]<=j) {
+                    take=dp[i-1][j-arr[i]];
+                }
+                dp[i][j]=take||ntake;
+            }
+            
+        }
+        return dp[m-1][sum];
+    }
+
+
+// Space optimised code
+
+ //  TC-O(m*sum) SC-O(sum) where m and sum are size of given array and target value
+ 
+ // Code--
+   
+    bool isSubsetSum(vector<int>arr, int sum){
+        int m=arr.size();
+    vector<int>prev(sum+1,0), curr(sum+1,0);
+        prev[0]=1;
+        if(arr[0]<=sum) prev[arr[0]]=1;
+        for(int i=1;i<m;i++){
+            for(int j=1;j<=sum;j++){
+                int ntake=prev[j];
+                int take=0;
+                if(arr[i]<=j) {
+                    take=prev[j-arr[i]];
+                }
+                curr[j]=take||ntake;
+            }
+            prev=curr;
+        }
+        return prev[sum];
+    }
