@@ -1,0 +1,86 @@
+// Coin change 2
+
+// Dp code--
+  
+  // TC-O(n*k) SC-O(n*k) where n and k are size of array and amount
+  
+  // Code--
+  
+   int change(int amount, vector<int>& coins) {
+        int n=coins.size();
+        int k=amount;
+        vector<vector<int>>dp(n,vector<int>(k+1,0));
+        for(int i=0;i<=k;i++){
+            if(i%coins[0]==0) dp[0][i]=1;
+            else dp[0][i]=0;
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=k;j++){
+                int ntake=dp[i-1][j];
+                int take=0;
+                if(coins[i]<=j){
+                    take=dp[i][j-coins[i]];
+                }
+                dp[i][j]=take+ntake;
+            }
+        }
+        return dp[n-1][k];
+    }
+
+
+// Space optimised code--
+  
+  
+  // TC-O(n*k) SC-O(k) where n and k are size of array and amount
+  
+  // Code--
+  
+  int change(int amount, vector<int>& coins) {
+        int n=coins.size();
+        int k=amount;
+        vector<int>prev(k+1,0),curr(k+1,0);
+        for(int i=0;i<=k;i++){
+            if(i%coins[0]==0) prev[i]=1;
+            else prev[i]=0;
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=k;j++){
+                int ntake=prev[j];
+                int take=0;
+                if(coins[i]<=j){
+                    take=curr[j-coins[i]];
+                }
+                curr[j]=take+ntake;
+            }
+            prev=curr;
+        }
+        return prev[k];
+    }
+    
+  // More space optimised code ( using only one array)
+  
+      // TC-O(n*k) SC-O(k) where n and k are size of array and amount
+  
+     // Code--
+     
+      int change(int amount, vector<int>& coins) {
+        int n=coins.size();
+        int k=amount;
+        vector<int>prev(k+1,0);
+        for(int i=0;i<=k;i++){
+            if(i%coins[0]==0) prev[i]=1;
+            else prev[i]=0;
+        }
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=k;j++){
+                int ntake=prev[j];
+                int take=0;
+                if(coins[i]<=j){
+                    take=prev[j-coins[i]];
+                }
+                prev[j]=take+ntake;
+            }
+            
+        }
+        return prev[k];
+    }
