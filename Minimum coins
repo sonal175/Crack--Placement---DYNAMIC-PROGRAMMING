@@ -1,0 +1,62 @@
+// Minimum coins
+
+// Dp code-
+ 
+ // TC-O(n*x) SC-O(n*x) where n and x are size of array and target
+ 
+ // Code--
+ 
+  int minimumElements(vector<int> &num, int x)
+{
+    int n=num.size();
+   vector<vector<int>>dp(n,vector<int>(x+1,0));
+    for(int i=0;i<=x;i++){
+        if(i%num[0]==0) dp[0][i]=i/num[0];
+        else dp[0][i]=1e9;
+    }
+   
+    
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=x;j++){
+            int ntake=dp[i-1][j];
+            int take=1e9;
+            if(num[i]<=j){
+                take=dp[i][j-num[i]]+1;
+            }
+            dp[i][j]=min(take,ntake);
+        }
+    }
+    if(dp[n-1][x]>=1e9) return -1;
+    return dp[n-1][x];
+}
+
+// Space optimised code
+
+  // TC-O(n*x) SC-O(n*x) where n and x are size of array and target
+ 
+ // Code--
+   
+   int minimumElements(vector<int> &num, int x)
+{
+    int n=num.size();
+   vector<int>prev(x+1,0),curr(x+1,0);
+    for(int i=0;i<=x;i++){
+        if(i%num[0]==0) prev[i]=i/num[0];
+        else prev[i]=1e9;
+    }
+   
+    
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=x;j++){
+            int ntake=prev[j];
+            int take=1e9;
+            if(num[i]<=j){
+                take=curr[j-num[i]]+1;
+            }
+            curr[j]=min(take,ntake);
+        }
+        prev=curr;
+    }
+    if(prev[x]>=1e9) return -1;
+    return prev[x];
+}
