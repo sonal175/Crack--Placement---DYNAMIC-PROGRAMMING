@@ -1,0 +1,83 @@
+// 0-1 Knapsack problem
+
+ // Dp code--
+ 
+ // TC-O( n*w) SC-O(n*w) where n and w are sze of array and max weight
+ 
+  // Code--
+  
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+     
+     vector<vector<int>>dp(n,vector<int>(W+1,0));
+     for(int i=wt[0];i<=W;i++){
+         dp[0][i]=val[0];
+     }
+    
+     for(int i=1;i<n;i++){
+         for(int j=0;j<=W;j++){
+             int ntake=dp[i-1][j];
+             int take=-1e8;
+             if(wt[i]<=j){
+                 take=dp[i-1][j-wt[i]]+val[i];
+             }
+             dp[i][j]=max(take,ntake);
+         }
+     }
+     return dp[n-1][W];
+    }
+    
+  // Space optimised code
+  
+   //  TC-O( n*w) SC-O(w) where n and w are sze of array and max weight
+   
+    // Code--
+    
+     int knapSack(int W, int wt[], int val[], int n) 
+    { 
+     
+     vector<int>prev(W+1,0),curr(W+1,0);
+     for(int i=wt[0];i<=W;i++){
+         prev[i]=val[0];
+     }
+    
+     for(int i=1;i<n;i++){
+         for(int j=0;j<=W;j++){
+             int ntake=prev[j];
+             int take=-1e8;
+             if(wt[i]<=j){
+                 take=prev[j-wt[i]]+val[i];
+             }
+             curr[j]=max(take,ntake);
+         }
+         prev=curr;
+     }
+     return prev[W];
+    }
+    
+  // More space optimised code (only one array needed)
+  
+   // TC-O( n*w) SC-O(w) where n and w are sze of array and max weight
+   
+    // Code--
+    
+       int cutRod(int price[], int n) {
+    vector<int>prev(n+1,0);
+    for(int i=0;i<=n;i++){
+        prev[i]=i*price[0];
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=n;j++){
+            int ntake=prev[j];
+            int take=-1e8;
+            int rodlength=i+1;
+            if(rodlength<=j){
+                take=prev[j-rodlength]+price[i];
+            }
+            prev[j]=max(take,ntake);
+        }
+    }
+    return prev[n];
+    }
+  
+   
