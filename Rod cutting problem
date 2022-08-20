@@ -1,0 +1,81 @@
+// Rod cutting problem
+
+// Dp code--
+
+  // TC-O(n*n) SC-O(n*n) where n is the size of array 
+  
+  // Code--
+   
+   int cutRod(vector<int> &price, int n)
+{
+	vector<vector<int>>dp(n,vector<int>(n+1,0));
+    for(int i=0;i<=n;i++){
+        dp[0][i]=i*price[0];
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=n;j++){
+            int ntake=dp[i-1][j];
+            int take=-1e8;
+            int rodlength=i+1;
+            if(rodlength<=j){
+                take=dp[i][j-rodlength]+price[i];
+            }
+            dp[i][j]=max(take,ntake);
+        }
+    }
+    return dp[n-1][n];
+}
+
+// Space optimised code--
+
+  // TC-O(n*n) SC-O(n*n) where n is the size of array 
+  
+  // Code--
+   
+   int cutRod(vector<int> &price, int n)
+{
+	vector<int>prev(n+1,0),curr(n+1,0);
+    for(int i=0;i<=n;i++){
+        prev[i]=i*price[0];
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=n;j++){
+            int ntake=prev[j];
+            int take=-1e8;
+            int rodlength=i+1;
+            if(rodlength<=j){
+                take=curr[j-rodlength]+price[i];
+            }
+            curr[j]=max(take,ntake);
+        }
+        prev=curr;
+    }
+    return prev[n];
+}
+
+// More space optimised code (using only one array)
+
+  
+  // TC-O(n*n) SC-O(n*n) where n is the size of array 
+  
+  // Code--
+  
+   int cutRod(vector<int> &price, int n)
+{
+	vector<int>prev(n+1,0);
+    for(int i=0;i<=n;i++){
+        prev[i]=i*price[0];
+    }
+    for(int i=1;i<n;i++){
+        for(int j=0;j<=n;j++){
+            int ntake=prev[j];
+            int take=-1e8;
+            int rodlength=i+1;
+            if(rodlength<=j){
+                take=prev[j-rodlength]+price[i];
+            }
+            prev[j]=max(take,ntake);
+        }
+    }
+    return prev[n];
+}
